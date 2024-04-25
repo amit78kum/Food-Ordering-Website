@@ -2,8 +2,9 @@
     position:absolute;
     z-index:1;
     width:100%;
-    background-color: #00000090;
+    /* background-color: #00000090; */
     display: grid;
+    padding:200px;
 }
 .login-popup-container{
     place-self: center;
