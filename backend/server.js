@@ -4,6 +4,8 @@ import { connectDB } from "./config/db.js";
 //const mongoose = require('mongoose');
 import mongoose from "mongoose"
 import foodRouter from "./routes/foodRoute.js";
+import userRouter from "./routes/userRoute.js";
+import 'dotenv/config.js'
 //app config
 const app=express();
 const port=4000;
@@ -14,15 +16,12 @@ app.use(cors())
 
 //db connection
   connectDB();
-// main().catch((err) => console.log(err));
 
-// async function main() {
-//   await mongoose.connect('mongodb+srv://amitstack:Amit#7488@cluster0.2pd5e5e.mongodb.net/food-del');
-//   console.log('database connected');
-// }
 //api end point
 app.use("/api/food",foodRouter)
+//app.use("/api/user",userRouter)
 app.use("/images",express.static('uploads'))
+app.use("/api/user",userRouter)
 
 
 
