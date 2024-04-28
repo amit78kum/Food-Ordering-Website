@@ -5,8 +5,8 @@ import axios from 'axios';
 import {toast} from "react-toastify";
 import { useEffect } from 'react';
 import {assets} from "../../assets/assets"
-const Orders = () => {
-  const url="http://localhost:4000"
+const Orders = ({url}) => {
+ // const url="http://localhost:4000"
   const [orders,setOrders]=useState([]);
   const fetchAllOrders=async()=>{
     const response=await axios.get(url+"/api/order/list");

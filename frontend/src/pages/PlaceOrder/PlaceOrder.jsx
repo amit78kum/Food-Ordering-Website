@@ -4,6 +4,8 @@ import { useContext } from 'react'
 import { StoreContext } from '../../context/StoreContext'
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+//import toast from 
+//import { toast } from 'react-toastify';
 const PlaceOrder = () => {
   const {getTotalCartAmount,token,food_list,cartItems,url}=useContext(StoreContext);
   const [data,setData]=useState({
@@ -54,6 +56,7 @@ const PlaceOrder = () => {
   if(!token){
     navigate('/cart')
     alert("first sign in account ")
+   //toast.error("first Sign in account")
 
   }else if(getTotalCartAmount()===0){
     navigate('/cart');
