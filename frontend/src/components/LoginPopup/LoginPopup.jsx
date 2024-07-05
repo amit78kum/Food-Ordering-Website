@@ -4,6 +4,7 @@ import { assets } from '../../assets/assets';
 import { useContext } from 'react';
 import { StoreContext } from '../../context/StoreContext';
 import axios from "axios"
+import { NavLink ,useNavigate} from "react-router-dom"
 const LoginPopup = ({setShowLogin}) => {
 
    const {url,setToken}=useContext(StoreContext);
@@ -58,6 +59,7 @@ const LoginPopup = ({setShowLogin}) => {
            
             <input name='email' onChange={onChangeHandler} value={data.email} type="email" placeholder='Your Email' required/>
             <input name='password' onChange={onChangeHandler} value={data.password} type="password" placeholder='Password' required/>
+            <p style={{color:"black",fontWeight:"bold"}}>Forgot Password  <NavLink to="/password-reset">Click Here</NavLink> </p>
 
         </div>
         <button type='submit'>{currState==="Sign Up"?"Create account":"Login"}</button>

@@ -2,15 +2,26 @@ import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import validator from "validator"
-
+import nodemailer from "nodemailer"
 const createToken =(id)=>{
     return jwt.sign({id},process.env.JWT_SECRET)
 }
 
+const transporter = nodemailer.createTransport({
+    service:"gmail",
+    auth:{
+        // user:process.env.EMAIL,
+        // pass:process.env.PASSWORD
+        user:"ak5518125@gmail.com",
+        pass:"Amit@#7488"
+
+    }
+}) 
 
 //login user
 const loginUser=async(req,res)=>{
     const {email,password}=req.body;
+    
     try{
         const user=await userModel.findOne({email});
         if(!user){
@@ -72,5 +83,51 @@ const registerUser=async(req,res)=>{
     }
 
 }
+const passwordreset=async(req,res)=>{
+    console.log(req.body)
 
-export{loginUser,registerUser};
+    const {email} = req.body;
+
+    if(!email){
+        res.status(401).json({status:401,message:"Enter Your Email"})
+    }
+
+    try {
+        const userfind = await userModel.findOne({email}); 
+
+        // token generate for reset password
+        const token = jwt.sign({_id:userfind._id},process.env.JWT_SECRET,{
+            expiresIn:"120s"
+        });
+        
+        const setusertoken = await userModel.findByIdAndUpdate({_id:userfind._id},{verifytoken:token},{new:true});
+
+
+        if(setusertoken){
+            const mailOptions = {
+                from:"ak5518125@gmail.com",
+                to:email,
+                subject:"Sending Email For password Reset",
+                text:`This Link Valid For 2 MINUTES http://localhost:5173/forgotpassword/${userfind.id}/${setusertoken.verifytoken}`
+            }
+
+            transporter.sendMail(mailOptions,(error,info)=>{
+                if(error){
+                    console.log("error",error);
+                    res.status(401).json({status:401,message:"email not send"})
+                }else{
+                    console.log("Email sent",info.response);
+                    res.status(201).json({status:201,message:"Email sent Succsfully"})
+                }
+            })
+
+        }
+
+    } catch (error) {
+        res.status(401).json({status:401,message:"invalid user"})
+    }
+
+};
+
+
+export{loginUser,registerUser,passwordreset};
